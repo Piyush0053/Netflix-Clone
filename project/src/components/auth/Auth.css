@@ -1,0 +1,53 @@
+.form-container {
+  max-width: 450px;
+  margin: 120px auto;
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  color: white;
+}
+
+.form-field {
+  margin-bottom: 16px;
+}
+
+/* Additional button styling */
+.btn-xl {
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Netflix colors */
+:root {
+  --netflix-red: #e50914;
+  --netflix-dark-gray: #333;
+  --netflix-medium-gray: #555;
+  --netflix-light-gray: #8c8c8c;
+}
+
+.text-netflix-red {
+  color: var(--netflix-red);
+}
+
+.text-netflix-light-gray {
+  color: var(--netflix-light-gray);
+}
+
+.bg-netflix-dark-gray {
+  background-color: var(--netflix-dark-gray);
+}
+
+.border-netflix-medium-gray {
+  border-color: var(--netflix-medium-gray);
+}
+
+.border-netflix-red {
+  border-color: var(--netflix-red);
+}
+
+/* Focus styles */
+.form-field input:focus {
+  border-color: var(--netflix-red);
+  outline: none;
+} 

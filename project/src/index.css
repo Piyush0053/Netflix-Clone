@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .banner-button {
+    @apply cursor-pointer flex items-center gap-2 rounded px-8 py-2 text-sm font-semibold transition hover:opacity-75;
+  }
+}

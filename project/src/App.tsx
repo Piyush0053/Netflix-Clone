@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { SupabaseProvider } from './context/SupabaseProvider';
+import { Analytics } from "@vercel/analytics/react"
 
 // Loading component for suspense fallback
 const Loading = () => {

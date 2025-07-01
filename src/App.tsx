@@ -7,7 +7,6 @@ import SignInPage from './pages/SignIn/SignInPage';
 import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
 import BrowsePage from './pages/Browse/BrowsePage';
 import ProfilePage from './pages/Profile/ProfilePage';
-import SearchPage from './pages/SearchPage';
 import UserListsPage from './pages/UserListsPage';
 import TMDbLoginPage from './pages/TMDbLoginPage';
 import { Toaster } from 'react-hot-toast';
@@ -46,13 +45,6 @@ function App() {
           <Suspense fallback={<Loading />}>
             <ProtectedRoute>
               <BrowsePage />
-            </ProtectedRoute>
-          </Suspense>
-        } />
-        <Route path="/search" element={
-          <Suspense fallback={<Loading />}>
-            <ProtectedRoute>
-              <SearchPage />
             </ProtectedRoute>
           </Suspense>
         } />

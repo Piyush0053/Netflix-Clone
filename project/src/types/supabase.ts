@@ -6,6 +6,17 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+// Define the active_sessions table type
+export interface ActiveSessions {
+  id: string;
+  user_id: string;
+  device_info: string | null;
+  ip_address: string | null;
+  created_at: string | null;
+  last_active: string | null;
+  user_agent: string | null;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -89,6 +100,35 @@ export interface Database {
           user_agent?: string | null
           created_at?: string | null
         }
+      },
+      active_sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          device_info: string | null;
+          ip_address: string | null;
+          created_at: string | null;
+          last_active: string | null;
+          user_agent: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          device_info?: string | null;
+          ip_address?: string | null;
+          created_at?: string | null;
+          last_active?: string | null;
+          user_agent?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          device_info?: string | null;
+          ip_address?: string | null;
+          created_at?: string | null;
+          last_active?: string | null;
+          user_agent?: string | null;
+        };
       }
     }
     Views: {

@@ -18,7 +18,7 @@ const SignUpPage: React.FC = () => {
       <div className="auth-background">
         <div className="background-overlay">
           <img 
-            src="/src/assets/images/signinpage.jpg" 
+            src="./src/assets/images/signinpage.jpg" 
             alt=""
             className="background-image"
           />

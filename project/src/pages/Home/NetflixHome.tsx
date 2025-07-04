@@ -72,6 +72,7 @@ function NetflixHome() {
     // Can implement navigation to content details page
   };
 
+  
   const toggleDarkMode = () => {
     setDarkMode(prev => !prev);
     document.body.classList.toggle('light-mode');

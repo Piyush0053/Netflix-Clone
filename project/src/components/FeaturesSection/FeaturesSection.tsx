@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import './FeaturesSection.css';
 import Feature from './Feature';
 import gsap from 'gsap';
@@ -18,7 +17,7 @@ const FeaturesSection: React.FC = () => {
   
   useEffect(() => {
     // Feature animations with ScrollTrigger
-    featuresRef.current.forEach((feature, index) => {
+    featuresRef.current.forEach((feature) => {
       if (feature) {
         ScrollTrigger.create({
           trigger: feature,

@@ -5,18 +5,21 @@ import Row from '../../components/Row/Row';
 
 const MoviesPage: React.FC = () => {
   // Movie specific API endpoints
+  const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+  const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
+
   const movieRequests = {
-    fetchTrendingMovies: `/trending/movie/week?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&language=en-US`,
-    fetchTopRated: `/movie/top_rated?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&language=en-US`,
-    fetchPopularMovies: `/movie/popular?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&language=en-US`,
-    fetchUpcomingMovies: `/movie/upcoming?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&language=en-US`,
-    fetchActionMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=28`,
-    fetchComedyMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=35`,
-    fetchHorrorMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=27`,
-    fetchRomanceMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=10749`,
-    fetchSciFiMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=878`,
-    fetchThrillerMovies: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=53`,
-    fetchDocumentaries: `/discover/movie?api_key=d5bd6f3bb580845fab6e6dee25c3f0a0&with_genres=99`,
+    fetchTrendingMovies: `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=en-US`,
+    fetchTopRated: `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US`,
+    fetchPopularMovies: `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US`,
+    fetchUpcomingMovies: `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US`,
+    fetchActionMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=28`,
+    fetchComedyMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=35`,
+    fetchHorrorMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=27`,
+    fetchRomanceMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=10749`,
+    fetchSciFiMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=878`,
+    fetchThrillerMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=53`,
+    fetchDocumentaries: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=99`,
   };
 
   return (

@@ -3,14 +3,7 @@ import { motion } from 'framer-motion';
 import { useLocation, Link } from 'react-router-dom';
 import './Navbar.css';
 
-interface NavbarProps {
-  darkMode: boolean;
-  toggleDarkMode: () => void;
-  navigate: (path: string) => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode, navigate }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isShowPage = location.pathname === '/netflix-show';
@@ -25,9 +18,6 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode, navigate }) =
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLanguage(e.target.value);
-  };
 
   return (
     <motion.div 
@@ -45,30 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode, navigate }) =
       </Link>
       
       <div className="top-right-controls">
-        {!isShowPage && (
-          <>
-            <motion.button 
-              className="theme-toggle"
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleDarkMode}
-            >
-              <span className="theme-toggle-icon">
-                {darkMode ? '☀️' : '🌙'}
-              </span>
-            </motion.button>
-            
-            <div className="language-picker-top glass-effect">
-              <select
-                className="language-select"
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-              >
-                <option value="en">English</option>
-                <option value="hi">हिंदी</option>
-              </select>
-            </div>
-          </>
-        )}
+        {!isShowPage && null}
         
         {isShowPage ? (
           <img

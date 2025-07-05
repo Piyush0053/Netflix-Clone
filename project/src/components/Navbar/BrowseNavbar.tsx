@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
+import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -7,18 +11,16 @@ import TrailerModal from '../TrailerModal';
 import { type SearchResult } from '../../api/tmdbSearch';
 import { fetchVideos, getTrailerUrl } from '../../api/tmdbApi';
 import './Navbar.css';
-                                              
+
 const BrowseNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showTrailer, setShowTrailer] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
-  const [selectedContent, setSelectedContent] = useState<SearchResult | null>(null);
   const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
-  
+
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,10 +32,11 @@ const BrowseNavbar: React.FC = () => {
   }, []);
 
   const handleSearchResultSelect = async (result: SearchResult) => {
+
     console.log('Selected search result:', result);
     setSelectedContent(result);
     setIsLoadingTrailer(true);
-    
+
     try {
       // Ensure we're using the correct ID and media type from the selected result
       const mediaType = result.media_type || (result.title ? 'movie' : 'tv');
@@ -46,7 +49,9 @@ const BrowseNavbar: React.FC = () => {
       console.log('Fetched videos:', videos);
       
       const trailerInfo = getTrailerUrl(videos, { muted: false, autoplay: true });
+
       console.log('Trailer info:', trailerInfo);
+
       
       if (trailerInfo && trailerInfo.embedUrl) {
         setTrailerUrl(trailerInfo.embedUrl);
@@ -69,7 +74,6 @@ const BrowseNavbar: React.FC = () => {
     console.log('Closing trailer');
     setShowTrailer(false);
     setTrailerUrl(null);
-    setSelectedContent(null);
   };
 
   // Helper function to check if a nav link is active
@@ -156,7 +160,14 @@ const BrowseNavbar: React.FC = () => {
                 </div>
                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Profile</Link>
                 <button 
-                  onClick={signOut}
+                  onClick={async () => {
+                    try {
+                      await signOut();
+                      navigate('/');
+                    } catch (error) {
+                      console.error('Error signing out:', error);
+                    }
+                  }}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                 >
                   Sign Out

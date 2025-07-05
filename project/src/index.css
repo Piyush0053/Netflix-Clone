@@ -7,3 +7,49 @@
     @apply cursor-pointer flex items-center gap-2 rounded px-8 py-2 text-sm font-semibold transition hover:opacity-75;
   }
 }
+
+/* Hide scrollbar for webkit browsers */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Netflix color utilities */
+.text-netflix-red {
+  color: #e50914;
+}
+
+.text-netflix-light-gray {
+  color: #8c8c8c;
+}
+
+.border-netflix-red {
+  border-color: #e50914;
+}
+
+.bg-netflix-red {
+  background-color: #e50914;
+}
+
+.bg-netflix-black {
+  background-color: #141414;
+}

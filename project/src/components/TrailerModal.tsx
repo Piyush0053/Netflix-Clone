@@ -1,5 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 
 interface TrailerModalProps {
   trailerUrl: string | null;
@@ -7,39 +8,79 @@ interface TrailerModalProps {
 }
 
 const TrailerModal: React.FC<TrailerModalProps> = ({ trailerUrl, onClose }) => {
+  // Handle escape key press
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [onClose]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   if (!trailerUrl) return null;
 
   return (
-    <motion.div 
-      className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-    >
-      <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-        <button 
-          className="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
-          onClick={onClose}
+    <AnimatePresence>
+      <motion.div 
+        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        onClick={onClose}
+      >
+        <motion.div 
+          className="relative w-full max-w-6xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <svg xmlns="https://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        <div className="w-full h-full flex items-center justify-center">
+          {/* Close Button */}
+          <motion.button 
+            className="absolute top-4 right-4 z-10 bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-all duration-200 backdrop-blur-sm"
+            onClick={onClose}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Close trailer"
+          >
+            <X size={24} />
+          </motion.button>
+
+          {/* Trailer iframe */}
           <iframe
-            width="853"
-            height="480"
             src={trailerUrl}
-            title="Trailer"
+            title="Movie Trailer"
+            className="w-full h-full"
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-            className="max-w-[90%] max-h-[90%]"
           />
-        </div>
-      </div>
-    </motion.div>
+        </motion.div>
+
+        {/* Background close area indicator */}
+        <motion.div 
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/70 text-sm flex items-center gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <span>Press ESC or click outside to close</span>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

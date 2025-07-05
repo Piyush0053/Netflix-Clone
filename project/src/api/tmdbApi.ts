@@ -102,31 +102,49 @@ export const fetchTrending = async () => {
 
 // Fetch movie/TV show details including videos
 export const fetchVideos = async (id: number, mediaType: 'movie' | 'tv') => {
-  // Mock video data mapping
-  const mockVideos: {[key: number]: any[]} = {
-    1: [{ // Stranger Things
+  console.log(`fetchVideos called with id: ${id}, mediaType: ${mediaType}`);
+  
+  // Enhanced mock video data mapping with more specific content
+  const mockVideos: {[key: string]: any[]} = {
+    // Stranger Things (TV)
+    '1_tv': [{ 
       key: 'b9EkMc79ZSU', 
       site: 'YouTube', 
       type: 'Trailer', 
       name: 'Stranger Things 4 | Official Trailer' 
     }],
-    2: [{ // The Matrix
+    // The Matrix (Movie)
+    '2_movie': [{ 
       key: 'm8e-FF8MsqU', 
       site: 'YouTube', 
       type: 'Trailer', 
       name: 'The Matrix Resurrections – Official Trailer' 
     }],
-    3: [{ // Inception
+    // Inception (Movie)
+    '3_movie': [{ 
       key: 'YoHD9XEInc0', 
       site: 'YouTube', 
       type: 'Trailer', 
       name: 'Inception Official Trailer' 
+    }],
+    // Default fallback for any other content
+    'default': [{ 
+      key: 'dQw4w9WgXcQ', 
+      site: 'YouTube', 
+      type: 'Trailer', 
+      name: 'Sample Trailer' 
     }]
   };
   
+  // Create a unique key for this specific content
+  const contentKey = `${id}_${mediaType}`;
+  console.log(`Looking for videos with key: ${contentKey}`);
+  
   // If we're using mock data, return it directly
   if (USE_MOCK_DATA) {
-    return mockVideos[id] || mockVideos[1]; // Fallback to Stranger Things if ID not found
+    const videos = mockVideos[contentKey] || mockVideos['default'];
+    console.log(`Returning mock videos for ${contentKey}:`, videos);
+    return videos;
   }
   
   try {
@@ -137,23 +155,28 @@ export const fetchVideos = async (id: number, mediaType: 'movie' | 'tv') => {
     );
     
     if (!response.ok) {
-      return mockVideos[id] || mockVideos[1];
+      console.log(`API call failed, returning mock videos for ${contentKey}`);
+      return mockVideos[contentKey] || mockVideos['default'];
     }
     
     const data = await response.json();
     
     if (!data.results || !Array.isArray(data.results) || data.results.length === 0) {
-      return mockVideos[id] || mockVideos[1];
+      console.log(`No API results, returning mock videos for ${contentKey}`);
+      return mockVideos[contentKey] || mockVideos['default'];
     }
     
     return data.results;
   } catch (error) {
-    return mockVideos[id] || mockVideos[1];
+    console.error(`Error fetching videos for ${contentKey}:`, error);
+    return mockVideos[contentKey] || mockVideos['default'];
   }
 };
 
 // Get a YouTube trailer URL from video results
 export const getTrailerUrl = (videos: any[], options: { muted?: boolean, autoplay?: boolean } = {}) => {
+  console.log('getTrailerUrl called with videos:', videos);
+  
   // Default options
   const { muted = false, autoplay = true } = options;
   
@@ -174,21 +197,28 @@ export const getTrailerUrl = (videos: any[], options: { muted?: boolean, autopla
   const anyVideo = videos.find(video => video.site === 'YouTube');
   
   const video = trailer || anyTrailer || anyVideo;
+  console.log('Selected video:', video);
   
-  if (!video) return null;
+  if (!video) {
+    console.log('No suitable video found');
+    return null;
+  }
 
   // For embedding in iframes (modal trailer)
-  const embedUrl = `https://www.youtube.com/embed/${video.key}?autoplay=${autoplay ? 1 : 0}&mute=${muted ? 1 : 0}`;
+  const embedUrl = `https://www.youtube.com/embed/${video.key}?autoplay=${autoplay ? 1 : 0}&mute=${muted ? 1 : 0}&rel=0&modestbranding=1`;
   
   // For direct video source (background video)
   const directUrl = `https://www.youtube.com/watch?v=${video.key}`;
   
-  return {
+  const result = {
     embedUrl,
     directUrl,
     videoId: video.key,
     title: video.name
   };
+  
+  console.log('Returning trailer URL info:', result);
+  return result;
 };
 
 // Get genre names from genre IDs

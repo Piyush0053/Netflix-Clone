@@ -7,15 +7,14 @@ import TrailerModal from '../TrailerModal';
 import { type SearchResult } from '../../api/tmdbSearch';
 import { fetchVideos, getTrailerUrl } from '../../api/tmdbApi';
 import './Navbar.css';
-                                              
+
 const BrowseNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showTrailer, setShowTrailer] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
-  const [selectedContent, setSelectedContent] = useState<SearchResult | null>(null);
   const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
-  
+
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -29,13 +28,13 @@ const BrowseNavbar: React.FC = () => {
   }, []);
 
   const handleSearchResultSelect = async (result: SearchResult) => {
-    setSelectedContent(result);
     setIsLoadingTrailer(true);
-    
+
     try {
       // Fetch videos for the selected content
       const videos = await fetchVideos(result.id, result.media_type || 'movie');
       const trailerInfo = getTrailerUrl(videos, { muted: false, autoplay: true });
+
       
       if (trailerInfo && trailerInfo.embedUrl) {
         setTrailerUrl(trailerInfo.embedUrl);
@@ -55,7 +54,6 @@ const BrowseNavbar: React.FC = () => {
   const closeTrailer = () => {
     setShowTrailer(false);
     setTrailerUrl(null);
-    setSelectedContent(null);
   };
 
   // Helper function to check if a nav link is active
@@ -142,7 +140,14 @@ const BrowseNavbar: React.FC = () => {
                 </div>
                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Profile</Link>
                 <button 
-                  onClick={signOut}
+                  onClick={async () => {
+                    try {
+                      await signOut();
+                      navigate('/');
+                    } catch (error) {
+                      console.error('Error signing out:', error);
+                    }
+                  }}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                 >
                   Sign Out

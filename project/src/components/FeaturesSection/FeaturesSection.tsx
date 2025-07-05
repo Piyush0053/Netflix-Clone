@@ -17,7 +17,7 @@ const FeaturesSection: React.FC = () => {
   
   useEffect(() => {
     // Feature animations with ScrollTrigger
-    featuresRef.current.forEach((feature, index) => {
+    featuresRef.current.forEach((feature) => {
       if (feature) {
         ScrollTrigger.create({
           trigger: feature,

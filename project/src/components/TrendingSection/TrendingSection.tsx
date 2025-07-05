@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TrendingSection.css';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TrailerModal from '../TrailerModal';
 import { fetchTrending, fetchVideos, getTrailerUrl } from '../../api/tmdbApi';
-
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
 
 const TrendingSection: React.FC = () => {
   // State for managing trending content and loading state
@@ -54,34 +49,37 @@ const TrendingSection: React.FC = () => {
     if (trendingRef.current && !loading && trendingContent.length > 0) {
       // Small delay to ensure DOM is fully rendered
       const animationTimeout = setTimeout(() => {
+        // Use vanilla JavaScript instead of GSAP to avoid loading errors
         const titleElement = document.querySelector('.trending-title');
         if (titleElement) {
-          gsap.fromTo(titleElement, 
-            { opacity: 0, y: 10 },
-            { 
-              opacity: 1, 
-              y: 0, 
-              duration: 0.4,
-              clearProps: "transform"
-            }
-          );
+          titleElement.style.opacity = '0';
+          titleElement.style.transform = 'translateY(10px)';
+          titleElement.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          
+          // Trigger animation
+          setTimeout(() => {
+            titleElement.style.opacity = '1';
+            titleElement.style.transform = 'translateY(0)';
+          }, 50);
         }
         
-        // Only animate visible cards to improve performance
+        // Animate cards
         const cards = document.querySelectorAll('.trending-card');
         if (cards && cards.length > 0) {
           const visibleCards = Array.from(cards).slice(0, 6);
           
-          gsap.fromTo(visibleCards, 
-            { opacity: 0, y: 15 },
-            { 
-              opacity: 1, 
-              y: 0, 
-              stagger: 0.05,
-              duration: 0.4,
-              clearProps: "transform"
-            }
-          );
+          visibleCards.forEach((card, index) => {
+            const element = card as HTMLElement;
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(15px)';
+            element.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            
+            // Stagger the animations
+            setTimeout(() => {
+              element.style.opacity = '1';
+              element.style.transform = 'translateY(0)';
+            }, 100 + (index * 50));
+          });
         }
       }, 300); // Small delay to ensure DOM is ready
       
@@ -90,34 +88,22 @@ const TrendingSection: React.FC = () => {
   }, [loading, trendingContent]);
 
   const handleThumbnailHover = (id: number) => {
-    // Use will-change before animation
-    const card = document.querySelector(`.trending-card[data-id="${id}"]`);
+    // Use CSS transitions instead of GSAP
+    const card = document.querySelector(`.trending-card[data-id="${id}"]`) as HTMLElement;
     if (card) {
-      (card as HTMLElement).style.willChange = 'transform, box-shadow';
-      
-      gsap.to(card, {
-        scale: 1.05,
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-        duration: 0.15,
-        ease: "power2.out"
-      });
+      card.style.transform = 'scale(1.05)';
+      card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+      card.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
     }
   };
 
   const handleThumbnailLeave = (id: number) => {
     // Reset thumbnail animation
-    const card = document.querySelector(`.trending-card[data-id="${id}"]`);
+    const card = document.querySelector(`.trending-card[data-id="${id}"]`) as HTMLElement;
     if (card) {
-      gsap.to(card, {
-        scale: 1,
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-        duration: 0.15,
-        ease: "power2.out",
-        onComplete: () => {
-          // Clean up will-change
-          (card as HTMLElement).style.willChange = 'auto';
-        }
-      });
+      card.style.transform = 'scale(1)';
+      card.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+      card.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
     }
   };
 

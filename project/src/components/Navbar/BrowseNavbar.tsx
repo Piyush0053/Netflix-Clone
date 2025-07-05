@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import SearchBar from '../SearchBar/SearchBar';
 import { type SearchResult } from '../../api/tmdbSearch';
@@ -10,7 +10,6 @@ const BrowseNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, signOut } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {

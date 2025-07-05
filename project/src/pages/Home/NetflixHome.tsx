@@ -19,7 +19,6 @@ function NetflixHome() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [darkMode, setDarkMode] = useState(true);
   const [email, setEmail] = useState('');
   const [showTrailerModal, setShowTrailerModal] = useState(false);
   const [trailerLoading, setTrailerLoading] = useState(false);
@@ -72,11 +71,6 @@ function NetflixHome() {
     // Can implement navigation to content details page
   };
 
-  
-  const toggleDarkMode = () => {
-    setDarkMode(prev => !prev);
-    document.body.classList.toggle('light-mode');
-  };
 
   const handleEmailChange = (newEmail: string) => {
     try {
@@ -102,7 +96,7 @@ function NetflixHome() {
   if (isLoading) return <NetflixLoader />;
 
   return (
-    <div className={`main ${darkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className="main dark-theme">
       <div
         className="homepage-background"
         style={{
@@ -118,7 +112,7 @@ function NetflixHome() {
       {user ? (
         <BrowseNavbar />
       ) : (
-        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} navigate={navigate} />
+        <Navbar />
       )}
       
       {/* Featured Content Banner with Trailer Video */}

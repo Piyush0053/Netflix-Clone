@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import './FeaturesSection.css';
 import Feature from './Feature';
 import gsap from 'gsap';

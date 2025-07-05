@@ -24,7 +24,8 @@ interface Movie {
 
 const Row: React.FC<RowProps> = ({ title, fetchURL, isLargeRow = false }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [trailerUrl, setTrailerUrl] = useState<string | null>("");
+    const [trailerUrl, setTrailerUrl] = useState<string | null>("");
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,10 +66,15 @@ const Row: React.FC<RowProps> = ({ title, fetchURL, isLargeRow = false }) => {
     },
   };
 
+  const closeTrailer = () => {
+    setTrailerUrl("");
+    setShowTrailer(false);
+    setSelectedMovie(null);
+  };
+
   const handleClick = async (movie: Movie) => {
-    if (trailerUrl) {
-      setTrailerUrl("");
-      setShowTrailer(false);
+    if (trailerUrl && selectedMovie?.id === movie.id) {
+      closeTrailer();
     } else {
       try {
         const url = await movieTrailer(
@@ -79,6 +85,7 @@ const Row: React.FC<RowProps> = ({ title, fetchURL, isLargeRow = false }) => {
           const videoId = urlParams.get("v");
           if (videoId) {
             setTrailerUrl(videoId);
+            setSelectedMovie(movie);
             setShowTrailer(true);
             // Scroll to make trailer visible if needed
             setTimeout(() => {
@@ -189,7 +196,7 @@ const Row: React.FC<RowProps> = ({ title, fetchURL, isLargeRow = false }) => {
       )}
       
       <AnimatePresence>
-        {showTrailer && trailerUrl && (
+        {showTrailer && trailerUrl && selectedMovie && (
           <motion.div 
             id={`trailer-${title.replace(/\s+/g, '-')}`}
             className="relative mt-4 mb-8 bg-black rounded-md overflow-hidden"
@@ -203,12 +210,15 @@ const Row: React.FC<RowProps> = ({ title, fetchURL, isLargeRow = false }) => {
                 videoId={trailerUrl}
                 opts={opts}
                 className="absolute top-0 left-0 w-full h-full"
-                onEnd={() => setShowTrailer(false)}
+                onEnd={closeTrailer}
               />
+            </div>
+            <div className="p-4">
+              <h3 className="text-white text-xl font-bold">{selectedMovie.title || selectedMovie.name}</h3>
             </div>
             <button 
               className="absolute top-2 right-2 bg-black/70 p-2 rounded-full text-white z-20"
-              onClick={() => setShowTrailer(false)}
+              onClick={closeTrailer}
             >
               ✕
             </button>

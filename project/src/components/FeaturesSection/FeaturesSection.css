@@ -1,4 +1,4 @@
-.feature-row {
+  .feature-row {
   display: flex;
   align-items: center;
   padding: 72px 48px;
@@ -34,26 +34,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 400px; /* Fixed height for the container */
+  overflow: hidden; /* Ensure the image doesn't overflow */
+  border-radius: 8px; /* Optional: adds rounded corners */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Optional: adds depth */
+  background-color: #000; /* Black background for the TV screen area */
 }
 
 .feature-image img {
   width: 100%;
-  max-width: 500px;
-  height: auto;
-  position: relative;
-  z-index: 1;
+  height: 100%;
+  object-fit: cover; /* Changed back to cover to fill the container */
+  object-position:bottom;
+  position: absolute;
+  z-index: 1; /* Ensure the TV frame is above the video if needed */
 }
 
 .feature-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: auto;
+  top: 45%;
+  left: 45%;
+  transform: translate(-45%, -50%);
+  width: 85%; /* Adjust this to match the TV screen area */
+  height: 70%; /* Adjust this to match the TV screen area */
+  object-fit: cover; /* Ensures video fills the designated area */
   z-index: 0;
+  border-radius: 4px; /* Optional: if the TV screen has rounded corners */
 }
-
 /* Responsive adjustments */
 @media (max-width: 992px) {
   .feature-row {
@@ -79,6 +86,11 @@
     text-align: center;
   }
   
+  .feature-image {
+    height: 300px; /* Slightly smaller height on mobile */
+    width: 100%;
+  }
+  
   .feature-text {
     order: 1;
   }
@@ -94,9 +106,5 @@
   
   .feature-text p {
     font-size: 1rem;
-  }
-  
-  .feature-image img {
-    max-width: 100%;
   }
 }

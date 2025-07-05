@@ -101,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initializeAuth();
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
       if (newSession) {
         // If we have a new session, update the state
         setSession(newSession);
@@ -130,13 +130,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [supabase]);
 
   const signOut = async () => {
+    if (!user) {
+      toast.error("No user session found to sign out.");
+      return { error: 'No user session' };
+    }
+
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Error signing out:', error);
-        toast.error('Failed to sign out. Please try again.');
-        return { error };
+      // Remove the active session from the database
+      const { error: deleteError } = await supabase
+        .from('active_sessions')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (deleteError) {
+        console.error('Error removing active session:', deleteError);
+        toast.error('Could not clear session from server.');
       }
+
+      // Sign out from Supabase auth
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) {
+        console.error('Error signing out:', signOutError);
+        toast.error('Failed to sign out. Please try again.');
+        return { error: signOutError };
+      }
+
+      // Clear local state
       setUser(null);
       setSession(null);
       toast.success('Successfully signed out');

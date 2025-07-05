@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -18,6 +14,7 @@ const BrowseNavbar: React.FC = () => {
   const [showTrailer, setShowTrailer] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
+  const [selectedContent, setSelectedContent] = useState<SearchResult | null>(null);
 
   const { user, signOut } = useAuth();
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 // TMDB Search API functions
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY || "d5bd6f3bb580845fab6e6dee25c3f0a0";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export interface SearchResult {

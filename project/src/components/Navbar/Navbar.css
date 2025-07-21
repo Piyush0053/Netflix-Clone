@@ -96,6 +96,21 @@
   gap: 16px;
 }
 
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-email {
+  color: white;
+  font-size: 14px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .theme-toggle {
   background: none;
   border: none;
@@ -213,6 +228,10 @@
   
   .top-right-controls {
     gap: 8px;
+  }
+  
+  .user-email {
+    display: none; /* Hide email on mobile to save space */
   }
   
   .theme-toggle {

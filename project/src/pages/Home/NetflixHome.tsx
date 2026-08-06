@@ -9,7 +9,7 @@ import FeaturesSection from '../../components/FeaturesSection/FeaturesSection';
 import FAQSection from '../../components/FAQSection/FAQSection';
 import Footer from '../../components/Footer/Footer';
 import NetflixLoader from '../../components/NetflixLoader/NetflixLoader';
-import { useNavigate } from '../../hooks/useNavigate';
+import { useNavigate } from 'react-router-dom';
 import TrailerModal from '../../components/TrailerModal';
 import MovieTrailerBanner from '../../components/MovieTrailerBanner/MovieTrailerBanner';
 import { fetchRandomTrailer } from '../../api/tmdbApi';
@@ -100,7 +100,7 @@ function NetflixHome() {
       <div
         className="homepage-background"
         style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/src/assets/images/background.jpg)`,
+          backgroundImage: `url(/assets/images/background.jpg)`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
           backgroundSize: 'cover',

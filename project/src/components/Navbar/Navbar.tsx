@@ -4,7 +4,13 @@ import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  darkMode?: boolean;
+  toggleDarkMode?: () => void;
+  navigate?: (path: string) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const { user, signOut } = useAuth();

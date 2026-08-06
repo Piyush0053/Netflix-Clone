@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { resetPassword } from '../../lib/index';
+import apiClient from '../../lib/apiClient';
 import FormField from '../ui/FormField';
 import { ChevronRight } from 'lucide-react';
 
@@ -22,12 +22,7 @@ const ForgotPasswordForm: React.FC = () => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     try {
-      const { data, error } = await resetPassword(values.email);
-      
-      if (error) {
-        throw error;
-      }
-
+      await apiClient.post('/auth/reset-password', { email: values.email }).catch(() => {});
       toast.success('Password reset instructions sent to your email');
       navigate('/signin');
     } catch (error: any) {
